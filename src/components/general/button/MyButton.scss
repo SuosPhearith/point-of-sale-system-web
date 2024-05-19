@@ -1,0 +1,13 @@
+.my-btn{
+    min-width: 90px;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: var(--font-family-manrope);
+    font-weight: 500;
+    border: 1px solid gray;
+}
+
+.my-btn:hover{
+    border: 1px solid black;
+}
