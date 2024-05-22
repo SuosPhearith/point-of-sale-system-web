@@ -3,13 +3,17 @@ import { useContext, useEffect, useRef } from "react";
 //::================================================================================::
 
 //::================================>>Third party<<=================================::
+import { MdOutlineClose, MdOutlineLogout } from "react-icons/md";
 import {
-  MdOutlineClose,
-  MdOutlineGridView,
-  MdOutlineLogout,
-  MdOutlinePeople,
-  MdOutlineSettings,
-} from "react-icons/md";
+  BsBagCheck,
+  BsGrid,
+  BsBoxSeam,
+  BsBoxes,
+  BsPeople,
+  BsPersonPlus,
+  BsPersonVcard,
+  BsGear,
+} from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 //::================================================================================::
 
@@ -73,22 +77,74 @@ const Sidebar = () => {
                 }`}
               >
                 <span className="menu-link-icon">
-                  <MdOutlineGridView size={18} />
+                  <BsGrid size={20} />
                 </span>
                 <span className="menu-link-text">Dashboard</span>
               </Link>
             </li>
             <li className="menu-item">
               <Link
-                to="/user"
+                to="/order"
                 className={`menu-link ${
-                  location.pathname === "/user" ? "active" : ""
+                  location.pathname === "/order" ? "active" : ""
                 }`}
               >
                 <span className="menu-link-icon">
-                  <MdOutlinePeople size={20} />
+                  <BsBagCheck size={20} />
                 </span>
-                <span className="menu-link-text">User</span>
+                <span className="menu-link-text">Order</span>
+              </Link>
+            </li>
+            <li className="menu-item">
+              <Link
+                to="/product"
+                className={`menu-link ${
+                  location.pathname === "/product" ? "active" : ""
+                }`}
+              >
+                <span className="menu-link-icon">
+                  <BsBoxSeam size={20} />
+                </span>
+                <span className="menu-link-text">Product</span>
+              </Link>
+            </li>
+            <li className="menu-item">
+              <Link
+                to="/category"
+                className={`menu-link ${
+                  location.pathname === "/category" ? "active" : ""
+                }`}
+              >
+                <span className="menu-link-icon">
+                  <BsBoxes size={20} />
+                </span>
+                <span className="menu-link-text">Category</span>
+              </Link>
+            </li>
+            <li className="menu-item">
+              <Link
+                to="/customer"
+                className={`menu-link ${
+                  location.pathname === "/customer" ? "active" : ""
+                }`}
+              >
+                <span className="menu-link-icon">
+                  <BsPersonPlus size={20} />
+                </span>
+                <span className="menu-link-text">Customer</span>
+              </Link>
+            </li>
+            <li className="menu-item">
+              <Link
+                to="/employee"
+                className={`menu-link ${
+                  location.pathname === "/employee" ? "active" : ""
+                }`}
+              >
+                <span className="menu-link-icon">
+                  <BsPeople size={20} />
+                </span>
+                <span className="menu-link-text">Employee</span>
               </Link>
             </li>
           </ul>
@@ -97,11 +153,29 @@ const Sidebar = () => {
         <div className="sidebar-menu sidebar-menu2">
           <ul className="menu-list">
             <li className="menu-item">
-              <Link to="/" className="menu-link">
+              <Link
+                to="/profile"
+                className={`menu-link ${
+                  location.pathname === "/profile" ? "active" : ""
+                }`}
+              >
                 <span className="menu-link-icon">
-                  <MdOutlineSettings size={20} />
+                  <BsPersonVcard size={20} />
                 </span>
-                <span className="menu-link-text">Settings</span>
+                <span className="menu-link-text">Profile</span>
+              </Link>
+            </li>
+            <li className="menu-item">
+              <Link
+                to="/setting"
+                className={`menu-link ${
+                  location.pathname === "/setting" ? "active" : ""
+                }`}
+              >
+                <span className="menu-link-icon">
+                  <BsGear size={20} />
+                </span>
+                <span className="menu-link-text">Setting</span>
               </Link>
             </li>
             <li className="menu-item">
