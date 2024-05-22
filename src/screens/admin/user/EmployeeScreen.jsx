@@ -21,7 +21,7 @@ import { Input, Modal, Pagination, Select, Space } from "antd";
 import MainPage from "../../../components/page/MainPage";
 import { data } from "../../../utils/global/data";
 import MyButton from "../../../components/general/button/MyButton";
-import "./UserScreen.scss";
+import "./EmployeeScreen.scss";
 //::================================================================================::
 const role = [
   {

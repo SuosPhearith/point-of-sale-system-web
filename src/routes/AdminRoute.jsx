@@ -7,7 +7,7 @@ import { Route, Routes } from "react-router-dom";
 
 //::===============================>>Custom library<<===============================::
 import AdminLayout from "../layout/admin/AdminLayout";
-import UserScreen from "../screens/admin/user/UserScreen";
+import EmployeeScreen from "../screens/admin/user/EmployeeScreen";
 import { Dashboard, PageNotFound } from "../screens";
 //::================================================================================::
 
@@ -16,7 +16,7 @@ const AdminRoute = () => {
     <Routes>
       <Route element={<AdminLayout />}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/user" element={<UserScreen />} />
+        <Route path="/employee" element={<EmployeeScreen />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
