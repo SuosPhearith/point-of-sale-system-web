@@ -9,17 +9,26 @@ import { message } from "antd";
 //::===============================>>Custom library<<===============================::
 import image from "../../../assets/images/Login.png";
 import "./LoginScreen.scss";
+import { saveToken } from "../../../utils/help/help";
+import authRequest from "../../../services/authRequest";
 //::================================================================================::
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (email === "admin@gmail.com" && password === "admin@123") {
-      localStorage.setItem("role", "admin");
+  //::==>> handle login function
+  const handleLogin = async (e) => {
+    try {
+      e.preventDefault();
+      const data = await authRequest("auth/signIn", {
+        email,
+        password,
+      });
+      //::==>> save data to localstorage
+      saveToken(data.accessToken, data.refreshToken, data.user.roleId);
+      //::==>> redirect back
       window.location.href = "/";
-    } else {
-      message.info("ចូលទៅមើល README ខ្លួនឯងទៅ់🤭");
+    } catch (error) {
+      message.error(error.response.data.message);
     }
   };
   return (

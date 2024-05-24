@@ -93,14 +93,14 @@
     // background-color: aqua;
 }
 .email{
-    min-width: 200px;
+    min-width: 250px;
     width: 25%;
     font-size: var(--font-size);
     font-family: var(--font-family-manrope);
     font-weight: 500;
     // background-color: blue;
 }
-.role, .active, .avatar, .gender, .action{
+.role-emp, .active-emp, .avatar-emp, .gender-emp, .action-emp{
     min-width: 100px;
     width: 10%;
     font-size: var(--font-size);
@@ -123,7 +123,7 @@
     background-color:var(--scroll-thumb-bg-color);
 }
 
-.avatar img{
+.avatar-emp img{
     width: 40px;
     height: 40px;
     background-color: rgb(233, 233, 220);

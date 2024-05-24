@@ -1,12 +1,6 @@
 const UserRole = {
-  admin: "admin",
-  principal: "principal",
-  director: "director",
-  teacher: "teacher",
-  secretary: "secretary",
-  accountant: "accountant",
-  student: "student",
-  librarian: "librarian",
+  admin: "1",
+  employee: "2",
 };
 
 export default UserRole;
