@@ -7,7 +7,7 @@ import { Route, Routes } from "react-router-dom";
 
 //::===============================>>Custom library<<===============================::
 import AdminLayout from "../layout/admin/AdminLayout";
-import EmployeeScreen from "../screens/admin/user/EmployeeScreen";
+import EmployeeScreen from "../screens/admin/employee/EmployeeScreen";
 import { Dashboard, PageNotFound } from "../screens";
 //::================================================================================::
 
