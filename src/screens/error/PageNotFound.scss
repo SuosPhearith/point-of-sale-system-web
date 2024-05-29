@@ -1,0 +1,24 @@
+.main-pnf{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.key-pnf{
+    font-size: 120px;
+    color: gray;
+}
+.text-pnf{
+    font-size: 30px;
+    color: var(--text-color-inverted);
+}
+.btn-pnf{
+    margin-top: 10px;
+    padding: 10px;
+    background-color:var(--create-btn-bg-color);
+    border-radius: 6px;
+    color: var(--toggle-btn-bg-color);
+}

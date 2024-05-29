@@ -9,7 +9,7 @@ import { message } from "antd";
 //::===============================>>Custom library<<===============================::
 import image from "../../../assets/images/Login.png";
 import "./LoginScreen.scss";
-import { saveToken } from "../../../utils/help/help";
+import { saveTokenLogin } from "../../../utils/help/help";
 import authRequest from "../../../services/authRequest";
 //::================================================================================::
 const LoginScreen = () => {
@@ -19,12 +19,15 @@ const LoginScreen = () => {
   const handleLogin = async (e) => {
     try {
       e.preventDefault();
+
+      const userAgent = navigator.userAgent;
       const data = await authRequest("auth/signIn", {
         email,
         password,
+        userAgent,
       });
       //::==>> save data to localstorage
-      saveToken(data.accessToken, data.refreshToken, data.user.roleId);
+      saveTokenLogin(data.accessToken, data.refreshToken, data.user.roleId);
       //::==>> redirect back
       window.location.href = "/";
     } catch (error) {

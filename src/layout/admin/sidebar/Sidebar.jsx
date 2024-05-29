@@ -156,7 +156,10 @@ const Sidebar = () => {
               <Link
                 to="/profile"
                 className={`menu-link ${
-                  location.pathname === "/profile" ? "active" : ""
+                  location.pathname === "/profile" ||
+                  location.pathname === "/profile/log"
+                    ? "active"
+                    : ""
                 }`}
               >
                 <span className="menu-link-icon">
