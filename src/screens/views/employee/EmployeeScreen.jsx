@@ -32,6 +32,8 @@ import MyButton from "../../../components/general/button/MyButton";
 import "./EmployeeScreen.scss";
 import makeAPIRequest from "../../../services/makeAPIRequest";
 import SpinLayout from "../../../components/general/spin/SpinLayout";
+import male from "../../../assets/images/male.png";
+import female from "../../../assets/images/female.png";
 //::================================================================================::
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
 
@@ -58,6 +60,7 @@ const UserScreen = () => {
   const [updateModal, setUpdateModal] = useState(false);
   const [getOneModal, setGetOneModal] = useState(false);
   const [updateId, setUpdateId] = useState("");
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -80,6 +83,8 @@ const UserScreen = () => {
       });
     } catch (error) {
       message.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
   const findOne = async (id) => {
@@ -103,6 +108,14 @@ const UserScreen = () => {
       if (feedback) {
         message.success("Deleted successfully");
         getUsers();
+        if (users.length === 1) {
+          if (pagination.currentPage > 1) {
+            setPagination({
+              ...pagination,
+              currentPage: pagination.currentPage - 1,
+            });
+          }
+        }
       }
     } catch (error) {
       message.error("Something went wrong");
@@ -170,22 +183,23 @@ const UserScreen = () => {
     }
   };
   useEffect(() => {
-    getUsers(); // Call getUsers initially when the component mounts
-  }, []); // Add an empty dependency array to ensure this effect runs only once
+    setLoading(true);
+    getUsers();
+  }, []);
 
   useEffect(() => {
-    getUsers(); // Call getUsers when pagination.currentPage changes
+    getUsers();
   }, [pagination.currentPage]);
 
-  useEffect(() => {
-    getUsers(); // Call getUsers when search term changes
-  }, [search]);
   const paginationChange = (current, size) => {
     setPagination({ ...pagination, currentPage: current });
     console.log(`${current}, ${size}`);
   };
   //::================================================================================::
-
+  const handleSearch = () => {
+    setPagination({ ...pagination, currentPage: 1 });
+    getUsers();
+  };
   const handleFormSubmit = () => {
     createEmployee();
   };
@@ -206,7 +220,7 @@ const UserScreen = () => {
 
   return (
     <MainPage pageName={"Employee"}>
-      {users.lenght <= 0 ? (
+      {loading && !search ? (
         <SpinLayout />
       ) : (
         <>
@@ -225,8 +239,7 @@ const UserScreen = () => {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  onKeyDown={getUsers}
-                  onKeyUp={getUsers}
+                  onKeyDown={(e) => (e.key === "Enter" ? handleSearch() : null)}
                 />
                 <button className="search-btn" onClick={getUsers}>
                   <RiSearchLine size={20} />
@@ -251,8 +264,8 @@ const UserScreen = () => {
               <div className="gender-emp">Gender</div>
               <div className="action-emp">Action</div>
             </div>
-            {users.map((user, index) => (
-              <div className="admin-user-table-header-data" key={index}>
+            {users.map((user) => (
+              <div className="admin-user-table-header-data" key={user.id}>
                 <div className="name">{user.name}</div>
                 <div className="email">{user.email}</div>
                 <div className="active-emp">
@@ -273,9 +286,40 @@ const UserScreen = () => {
                   )}
                 </div>
                 <div className="avatar-emp">
-                  <img src={`${imageUrl}${user.avatar}`} alt="" />
+                  <img
+                    src={
+                      user.avatar
+                        ? `${imageUrl}${user.avatar}`
+                        : user.gender === "male"
+                        ? male
+                        : female
+                    }
+                    alt=""
+                  />
                 </div>
-                <div className="gender-emp">{user.gender.toUpperCase()}</div>
+                <div className="gender-emp">
+                  {user.gender === "male" ? (
+                    <img
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        objectFit: "cover",
+                      }}
+                      src={male}
+                      alt="male"
+                    />
+                  ) : (
+                    <img
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        objectFit: "cover",
+                      }}
+                      src={female}
+                      alt="female"
+                    />
+                  )}
+                </div>
                 <div className="action-emp">
                   <div className="action-inside">
                     <button

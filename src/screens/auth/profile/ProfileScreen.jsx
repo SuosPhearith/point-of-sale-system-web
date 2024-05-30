@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import makeAPIRequest from "../../../services/makeAPIRequest";
 import { useEffect, useState } from "react";
 import MyButton from "../../../components/general/button/MyButton";
+import male from "../../../assets/images/male.png";
+import female from "../../../assets/images/female.png";
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
 const ProfileScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -226,7 +228,16 @@ const ProfileScreen = () => {
       <div className="profile-container">
         <div className="profile-card">
           <div className="profile-information">Profile information</div>
-          <img className="profile-image-me" src={`${imageUrl}${avatar}`} />
+          <img
+            className="profile-image-me"
+            src={
+              avatar
+                ? `${imageUrl}${avatar}`
+                : me.gender === "male"
+                ? male
+                : female
+            }
+          />
           <input
             type="file"
             name="avatar"
