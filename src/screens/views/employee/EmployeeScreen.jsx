@@ -16,6 +16,7 @@ import {
   RiToggleLine,
 } from "react-icons/ri";
 import {
+  Image,
   Input,
   Modal,
   Pagination,
@@ -34,6 +35,8 @@ import makeAPIRequest from "../../../services/makeAPIRequest";
 import SpinLayout from "../../../components/general/spin/SpinLayout";
 import male from "../../../assets/images/male.png";
 import female from "../../../assets/images/female.png";
+import { MdOutlineEdit } from "react-icons/md";
+import FileUpload from "../../../components/general/FileUpload";
 //::================================================================================::
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
 
@@ -59,8 +62,10 @@ const UserScreen = () => {
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [getOneModal, setGetOneModal] = useState(false);
+  const [updateImageModal, setUpdateImageModal] = useState(false);
   const [updateId, setUpdateId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -182,6 +187,26 @@ const UserScreen = () => {
       message.error("Something went wrong");
     }
   };
+  const updateImage = async () => {
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      const feedback = await makeAPIRequest(
+        "PATCH",
+        `employee/${updateId}/updateImage`,
+        data
+      );
+      if (feedback) {
+        getUsers();
+        setUpdateId("");
+        clearPreview();
+        setUpdateImageModal(false);
+        message.success("Updated successfully");
+      }
+    } catch (error) {
+      message.error("Something went wrong");
+    }
+  };
   useEffect(() => {
     setLoading(true);
     getUsers();
@@ -216,6 +241,17 @@ const UserScreen = () => {
     findOne(id);
     setUpdateModal(true);
     setUpdateId(id);
+  };
+
+  const handleFileSelect = (selectedFile) => {
+    setFile(selectedFile);
+  };
+
+  const clearPreview = () => {
+    setFile(null);
+  };
+  const formatFileSize = (sizeInBytes) => {
+    return (sizeInBytes / (1024 * 1024)).toFixed(2);
   };
 
   return (
@@ -286,7 +322,8 @@ const UserScreen = () => {
                   )}
                 </div>
                 <div className="avatar-emp">
-                  <img
+                  <Image
+                    style={{ width: "40px", height: "40px" }}
                     src={
                       user.avatar
                         ? `${imageUrl}${user.avatar}`
@@ -296,6 +333,15 @@ const UserScreen = () => {
                     }
                     alt=""
                   />
+                  <button
+                    onClick={() => {
+                      setUpdateImageModal(true);
+                      clearPreview();
+                      setUpdateId(user.id);
+                    }}
+                  >
+                    <MdOutlineEdit size={17} />
+                  </button>
                 </div>
                 <div className="gender-emp">
                   {user.gender === "male" ? (
@@ -541,6 +587,53 @@ const UserScreen = () => {
             </section>
           </Modal>
           {/* end create modal */}
+          {/* start update image modal */}
+          <Modal
+            title="Update Image Category"
+            open={updateImageModal}
+            onOk={() => setUpdateImageModal(false)}
+            onCancel={() => setUpdateImageModal(false)}
+            footer={false}
+          >
+            <section className="my-form-section">
+              <Space style={{ width: "100%" }} direction="vertical">
+                <FileUpload
+                  onFileSelect={handleFileSelect}
+                  clearPreview={clearPreview}
+                />
+                {file && (
+                  <div>
+                    <h2>Selected File Information:</h2>
+                    <p>File Name: {file.name}</p>
+                    <p>File Type: {file.type}</p>
+                    <p>File Size: {formatFileSize(file.size)} MB</p>
+                  </div>
+                )}
+              </Space>
+              <div className="btn-create-form">
+                <Space>
+                  <MyButton
+                    color="whitesmoke"
+                    textColor="black"
+                    onClick={() => {
+                      setUpdateImageModal(false);
+                      clearPreview();
+                    }}
+                  >
+                    Cancel
+                  </MyButton>
+                  <MyButton
+                    color="white"
+                    textColor="black"
+                    onClick={() => updateImage()}
+                  >
+                    Update
+                  </MyButton>
+                </Space>
+              </div>
+            </section>
+          </Modal>
+          {/* end update image modal */}
         </>
       )}
     </MainPage>

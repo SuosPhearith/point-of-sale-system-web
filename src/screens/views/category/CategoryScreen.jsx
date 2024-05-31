@@ -10,13 +10,23 @@ import {
   RiToggleFill,
   RiToggleLine,
 } from "react-icons/ri";
+import { MdOutlineEdit } from "react-icons/md";
 import MainPage from "../../../components/page/MainPage";
 import { useEffect, useState } from "react";
-import { Input, Modal, Pagination, Popconfirm, Space, message } from "antd";
+import {
+  Image,
+  Input,
+  Modal,
+  Pagination,
+  Popconfirm,
+  Space,
+  message,
+} from "antd";
 import makeAPIRequest from "../../../services/makeAPIRequest";
 import SpinLayout from "../../../components/general/spin/SpinLayout";
 import categoryImage from "../../../assets/images/category.png";
 import MyButton from "../../../components/general/button/MyButton";
+import FileUpload from "../../../components/general/FileUpload";
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
 
 const CategoryScreen = () => {
@@ -25,8 +35,10 @@ const CategoryScreen = () => {
   const [search, setSearch] = useState("");
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
+  const [updateImageModal, setUpdateImageModal] = useState(false);
   const [updateId, setUpdateId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 10,
@@ -84,13 +96,11 @@ const CategoryScreen = () => {
   const updateEmployee = async () => {
     try {
       if (!updateId) return message.info("Update ID not found");
-      const { name, description, gender } = formData;
-      if (!name || !description || !gender)
-        return message.info("Please input all fields");
+      const { name, description } = formData;
+      if (!name || !description) return message.info("Please input all fields");
       const feedback = await makeAPIRequest("PATCH", `category/${updateId}`, {
         name,
         description,
-        gender,
       });
       if (feedback) {
         getCategories();
@@ -127,6 +137,27 @@ const CategoryScreen = () => {
       );
       if (feedback) {
         getCategories();
+      }
+    } catch (error) {
+      message.error("Something went wrong");
+    }
+  };
+
+  const updateImage = async () => {
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      const feedback = await makeAPIRequest(
+        "PATCH",
+        `category/${updateId}/updateImage`,
+        data
+      );
+      if (feedback) {
+        getCategories();
+        setUpdateId("");
+        clearPreview();
+        setUpdateImageModal(false);
+        message.success("Updated successfully");
       }
     } catch (error) {
       message.error("Something went wrong");
@@ -195,6 +226,17 @@ const CategoryScreen = () => {
     if (file) {
       setFormData({ ...formData, image: file });
     }
+  };
+
+  const handleFileSelect = (selectedFile) => {
+    setFile(selectedFile);
+  };
+
+  const clearPreview = () => {
+    setFile(null);
+  };
+  const formatFileSize = (sizeInBytes) => {
+    return (sizeInBytes / (1024 * 1024)).toFixed(2);
   };
   //::==========================================================::
   return (
@@ -268,7 +310,8 @@ const CategoryScreen = () => {
                 </div>
                 <div className="avatar-emp">1</div>
                 <div className="avatar-emp">
-                  <img
+                  <Image
+                    style={{ width: "40px", height: "40px" }}
                     src={
                       category.image
                         ? `${imageUrl}${category.image}`
@@ -276,6 +319,15 @@ const CategoryScreen = () => {
                     }
                     alt=""
                   />
+                  <button
+                    onClick={() => {
+                      setUpdateImageModal(true);
+                      clearPreview();
+                      setUpdateId(category.id);
+                    }}
+                  >
+                    <MdOutlineEdit size={17} />
+                  </button>
                 </div>
                 <div className="action-emp">
                   <div className="action-inside">
@@ -414,10 +466,6 @@ const CategoryScreen = () => {
                 setFormData({ ...formData, description: e.target.value })
               }
             />
-            <p style={{ color: "grey" }}>
-              Image <span style={{ color: "red" }}>*</span>
-            </p>
-            <input type="file" name="" id="" />
           </Space>
           <div className="btn-create-form">
             <Space>
@@ -442,7 +490,54 @@ const CategoryScreen = () => {
           </div>
         </section>
       </Modal>
-      {/* end create modal */}
+      {/* end update modal */}
+      {/* start update image modal */}
+      <Modal
+        title="Update Image Category"
+        open={updateImageModal}
+        onOk={() => setUpdateImageModal(false)}
+        onCancel={() => setUpdateImageModal(false)}
+        footer={false}
+      >
+        <section className="my-form-section">
+          <Space style={{ width: "100%" }} direction="vertical">
+            <FileUpload
+              onFileSelect={handleFileSelect}
+              clearPreview={clearPreview}
+            />
+            {file && (
+              <div>
+                <h2>Selected File Information:</h2>
+                <p>File Name: {file.name}</p>
+                <p>File Type: {file.type}</p>
+                <p>File Size: {formatFileSize(file.size)} MB</p>
+              </div>
+            )}
+          </Space>
+          <div className="btn-create-form">
+            <Space>
+              <MyButton
+                color="whitesmoke"
+                textColor="black"
+                onClick={() => {
+                  setUpdateImageModal(false);
+                  clearPreview();
+                }}
+              >
+                Cancel
+              </MyButton>
+              <MyButton
+                color="white"
+                textColor="black"
+                onClick={() => updateImage()}
+              >
+                Update
+              </MyButton>
+            </Space>
+          </div>
+        </section>
+      </Modal>
+      {/* end update image modal */}
     </MainPage>
   );
 };
