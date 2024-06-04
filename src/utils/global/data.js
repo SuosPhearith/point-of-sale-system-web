@@ -1,3 +1,6 @@
+export const DefaultAvatar =
+  "https://static.vecteezy.com/system/resources/previews/026/966/960/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg";
+
 export const data = [
   {
     id: "02fc3473-e60f-4c40-b565-779f6ec562ef",
