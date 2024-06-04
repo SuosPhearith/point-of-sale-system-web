@@ -10,6 +10,7 @@ import {
   RiToggleFill,
   RiToggleLine,
 } from "react-icons/ri";
+import { FaLessThan } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import MainPage from "../../../components/page/MainPage";
 import { useEffect, useState } from "react";
@@ -19,18 +20,20 @@ import {
   Modal,
   Pagination,
   Popconfirm,
+  Select,
   Space,
   message,
 } from "antd";
 import makeAPIRequest from "../../../services/makeAPIRequest";
 import SpinLayout from "../../../components/general/spin/SpinLayout";
-import categoryImage from "../../../assets/images/category.png";
+import productImage from "../../../assets/images/category.png";
 import MyButton from "../../../components/general/button/MyButton";
 import FileUpload from "../../../components/general/FileUpload";
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
 
-const CategoryScreen = () => {
+const ProductScreen = () => {
   //::=====================>>Screen state<<=====================::
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
   const [createModal, setCreateModal] = useState(false);
@@ -47,18 +50,22 @@ const CategoryScreen = () => {
   });
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
+    price: null,
+    stock: null,
+    alert: 10,
     image: null,
+    discount: 0,
+    category: null,
   });
   //::==========================================================::
   //::=====================>>Screen action<<====================::
-  const getCategories = async () => {
+  const getProducts = async () => {
     try {
       const data = await makeAPIRequest(
         "GET",
-        `category?page=${pagination.currentPage}&key=${search}`
+        `product?page=${pagination.currentPage}&key=${search}`
       );
-      setCategories(data.data);
+      setProducts(data.data);
       setPagination({
         currentPage: data.currentPage,
         pageSize: data.pageSize,
@@ -72,14 +79,29 @@ const CategoryScreen = () => {
     }
   };
 
-  const removeCategory = async (id) => {
+  const getCategories = async () => {
+    try {
+      const data = await makeAPIRequest("GET", `product/getAll/getAllCategory`);
+      const transformedData = data.map((item) => ({
+        value: item.id,
+        label: item.name,
+      }));
+      setCategories(transformedData);
+    } catch (error) {
+      message.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeProduct = async (id) => {
     try {
       if (!id) return message.info("Update ID not found");
-      const feedback = await makeAPIRequest("DELETE", `category/${id}`);
+      const feedback = await makeAPIRequest("DELETE", `product/${id}`);
       if (feedback) {
         message.success("Deleted successfully");
-        getCategories();
-        if (categories.length === 1) {
+        getProducts();
+        if (products.length === 1) {
           if (pagination.currentPage > 1) {
             setPagination({
               ...pagination,
@@ -93,17 +115,29 @@ const CategoryScreen = () => {
     }
   };
 
-  const updateCategory = async () => {
+  const updateProduct = async () => {
     try {
       if (!updateId) return message.info("Update ID not found");
-      const { name, description } = formData;
-      if (!name || !description) return message.info("Please input all fields");
-      const feedback = await makeAPIRequest("PATCH", `category/${updateId}`, {
+      const { name, price, stock, alert, discount, category } = formData;
+      if (
+        !name ||
+        (!price && price !== 0) ||
+        (!category && category !== 0) ||
+        (!stock && stock !== 0) ||
+        (!alert && alert !== 0) ||
+        (!discount && discount !== 0)
+      )
+        return message.info("Please input all fields");
+      const feedback = await makeAPIRequest("PATCH", `product/${updateId}`, {
         name,
-        description,
+        price,
+        stock,
+        alert,
+        discount,
+        categoryId: category,
       });
       if (feedback) {
-        getCategories();
+        getProducts();
         setUpdateModal(false);
         setUpdateId("");
         message.success("Updated successfully");
@@ -115,12 +149,15 @@ const CategoryScreen = () => {
 
   const findOne = async (id) => {
     try {
-      const category = await makeAPIRequest("GET", `category/${id}`);
-      if (category) {
+      const product = await makeAPIRequest("GET", `product/${id}`);
+      if (product) {
         setFormData({
-          name: category.name,
-          description: category.description,
-          gender: category.gender,
+          name: product.name,
+          price: product.price,
+          stock: product.stock,
+          alert: product.alert,
+          discount: product.discount,
+          category: product.categoryId,
         });
       }
     } catch (error) {
@@ -128,15 +165,15 @@ const CategoryScreen = () => {
     }
   };
 
-  const toggleActiveCategory = async (id) => {
+  const toggleActiveProduct = async (id) => {
     try {
       if (!id) return message.info("Update ID not found");
       const feedback = await makeAPIRequest(
         "PATCH",
-        `category/${id}/toggle-active`
+        `product/${id}/toggle-active`
       );
       if (feedback) {
-        getCategories();
+        getProducts();
       }
     } catch (error) {
       message.error("Something went wrong");
@@ -149,11 +186,11 @@ const CategoryScreen = () => {
       data.append("file", file);
       const feedback = await makeAPIRequest(
         "PATCH",
-        `category/${updateId}/updateImage`,
+        `product/${updateId}/updateImage`,
         data
       );
       if (feedback) {
-        getCategories();
+        getProducts();
         setUpdateId("");
         clearPreview();
         setUpdateImageModal(false);
@@ -164,16 +201,28 @@ const CategoryScreen = () => {
     }
   };
 
-  const createCategory = async () => {
+  const createProduct = async () => {
     try {
-      const { name, description, image } = formData;
-      if (!name || !description || !image)
+      const { name, price, stock, image, alert, discount, category } = formData;
+      if (
+        !name ||
+        !image ||
+        (!category && category !== 0) ||
+        (!price && price !== 0) ||
+        (!stock && stock !== 0) ||
+        (!alert && alert !== 0) ||
+        (!discount && discount !== 0)
+      )
         return message.info("Please input all fields");
       const data = new FormData();
       data.append("name", name);
-      data.append("description", description);
+      data.append("price", price);
+      data.append("stock", stock);
+      data.append("alert", alert);
       data.append("file", image);
-      const feedback = await makeAPIRequest("POST", "category", data);
+      data.append("discount", discount);
+      data.append("categoryId", category);
+      const feedback = await makeAPIRequest("POST", "product", data);
       if (feedback) {
         setCreateModal(false);
         setFormData({
@@ -182,7 +231,7 @@ const CategoryScreen = () => {
           image: null,
         });
         message.success("Created successfully");
-        getCategories();
+        getProducts();
       }
     } catch (error) {
       message.error("Something went wrong");
@@ -191,10 +240,11 @@ const CategoryScreen = () => {
 
   useEffect(() => {
     setLoading(true);
+    getProducts();
     getCategories();
   }, []);
   useEffect(() => {
-    getCategories();
+    getProducts();
   }, [pagination.currentPage]);
   //::==========================================================::
   //::=====================>>Screen handle<<====================::
@@ -203,7 +253,7 @@ const CategoryScreen = () => {
   };
   const handleSearch = () => {
     setPagination({ ...pagination, currentPage: 1 });
-    getCategories();
+    getProducts();
   };
   const handleFormCancel = () => {
     setCreateModal(false);
@@ -214,7 +264,7 @@ const CategoryScreen = () => {
     });
   };
   const handleFormSubmit = () => {
-    createCategory();
+    createProduct();
   };
   const handleUpdateEmployee = (id) => {
     setUpdateId(id);
@@ -240,7 +290,7 @@ const CategoryScreen = () => {
   };
   //::==========================================================::
   return (
-    <MainPage pageName="Category">
+    <MainPage pageName="Product">
       {loading ? (
         <SpinLayout />
       ) : (
@@ -250,7 +300,7 @@ const CategoryScreen = () => {
             <div className="admin-user-header-left">
               <RiHome4Line size={20} />
               <RiArrowDropRightLine size={32} />
-              <span>Category</span>
+              <span>Product</span>
             </div>
             <div className="admin-user-header-right">
               <div className="admin-user-header-right-search">
@@ -270,7 +320,15 @@ const CategoryScreen = () => {
                 className="admin-user-header-right-create"
                 onClick={() => {
                   setCreateModal(true),
-                    setFormData({ name: "", description: "", image: null });
+                    setFormData({
+                      name: "",
+                      price: null,
+                      stock: null,
+                      alert: 10,
+                      image: null,
+                      discount: 0,
+                      category: null,
+                    });
                 }}
               >
                 <RiAddCircleLine size={29} className="create-btn-hover" />
@@ -281,41 +339,56 @@ const CategoryScreen = () => {
           <section className="admin-user-table">
             <div className="admin-user-table-header">
               <div className="name">Name</div>
-              <div className="email">Description</div>
+              <div className="active-emp">Price</div>
+              <div className="active-emp">Stock</div>
               <div className="active-emp">Active</div>
-              <div className="avatar-emp">Product</div>
+              <div className="avatar-emp">Alert</div>
+              <div className="avatar-emp">Discount</div>
               <div className="gender-emp">Image</div>
               <div className="action-emp">Action</div>
             </div>
-            {categories.map((category) => (
-              <div className="admin-user-table-header-data" key={category.id}>
-                <div className="name">{category.name}</div>
-                <div className="email">{category.description}</div>
+            {products.map((product) => (
+              <div className="admin-user-table-header-data" key={product.id}>
+                <div className="name">{product.name}</div>
+                <div className="active-emp">${product.price}</div>
+                <div
+                  className="active-emp"
+                  style={{
+                    color: product.stock < product.alert ? "red" : "blue",
+                  }}
+                >
+                  {product.stock}
+                </div>
                 <div className="active-emp">
-                  {category.status ? (
+                  {product.status ? (
                     <button
                       className="search-btn"
-                      onClick={() => toggleActiveCategory(category.id)}
+                      onClick={() => toggleActiveProduct(product.id)}
                     >
                       <RiToggleFill size={30} />
                     </button>
                   ) : (
                     <button
                       className="search-btn"
-                      onClick={() => toggleActiveCategory(category.id)}
+                      onClick={() => toggleActiveProduct(product.id)}
                     >
                       <RiToggleLine size={30} />
                     </button>
                   )}
                 </div>
-                <div className="avatar-emp">{category._count.Product}</div>
+                <div className="avatar-emp" style={{ color: "violet" }}>
+                  <FaLessThan size={10} /> {product.alert}
+                </div>
+                <div className="avatar-emp" style={{ color: "purple" }}>
+                  {product.discount} %
+                </div>
                 <div className="avatar-emp">
                   <Image
                     style={{ width: "40px", height: "40px" }}
                     src={
-                      category.image
-                        ? `${imageUrl}${category.image}`
-                        : categoryImage
+                      product.image
+                        ? `${imageUrl}${product.image}`
+                        : productImage
                     }
                     alt=""
                   />
@@ -323,7 +396,7 @@ const CategoryScreen = () => {
                     onClick={() => {
                       setUpdateImageModal(true);
                       clearPreview();
-                      setUpdateId(category.id);
+                      setUpdateId(product.id);
                     }}
                   >
                     <MdOutlineEdit size={17} />
@@ -339,7 +412,7 @@ const CategoryScreen = () => {
                     </button>
                     <button
                       className="btn-action"
-                      onClick={() => handleUpdateEmployee(category.id)}
+                      onClick={() => handleUpdateEmployee(product.id)}
                     >
                       <RiEditFill size={20} color="blue" />
                     </button>
@@ -347,7 +420,7 @@ const CategoryScreen = () => {
                       <Popconfirm
                         title="Remove employee"
                         description="Are you sure to remove this employee?"
-                        onConfirm={() => removeCategory(category.id)}
+                        onConfirm={() => removeProduct(product.id)}
                         okText="Yes"
                         cancelText="No"
                       >
@@ -377,7 +450,7 @@ const CategoryScreen = () => {
 
       {/* start create modal */}
       <Modal
-        title="Create Category"
+        title="Create Product"
         open={createModal}
         onOk={() => setCreateModal(false)}
         onCancel={() => setCreateModal(false)}
@@ -396,14 +469,58 @@ const CategoryScreen = () => {
               }
             />
             <p style={{ color: "grey" }}>
-              Description <span style={{ color: "red" }}>*</span>
+              Price <span style={{ color: "red" }}>*</span>
             </p>
             <Input
-              placeholder="Description"
-              value={formData.description}
+              placeholder="Price"
+              value={formData.price}
               onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
+                setFormData({ ...formData, price: e.target.value })
               }
+            />
+            <p style={{ color: "grey" }}>
+              Stock <span style={{ color: "red" }}>*</span>
+            </p>
+            <Input
+              placeholder="Stock"
+              value={formData.stock}
+              onChange={(e) =>
+                setFormData({ ...formData, stock: e.target.value })
+              }
+            />
+            <p style={{ color: "grey" }}>
+              Alert <span style={{ color: "red" }}>*</span>
+            </p>
+            <Input
+              placeholder="Alert"
+              value={formData.alert}
+              onChange={(e) =>
+                setFormData({ ...formData, alert: e.target.value })
+              }
+            />
+            <p style={{ color: "grey" }}>
+              Discount <span style={{ color: "red" }}>*</span>
+            </p>
+            <Input
+              placeholder="Discount"
+              value={formData.discount}
+              onChange={(e) =>
+                setFormData({ ...formData, discount: e.target.value })
+              }
+            />
+            <p style={{ color: "grey" }}>
+              Category <span style={{ color: "red" }}>*</span>
+            </p>
+            <Select
+              placeholder="Category"
+              value={formData.category}
+              onChange={(value) => {
+                setFormData({ ...formData, category: value });
+              }}
+              style={{
+                width: "100%",
+              }}
+              options={categories}
             />
             <p style={{ color: "grey" }}>
               Image <span style={{ color: "red" }}>*</span>
@@ -457,14 +574,62 @@ const CategoryScreen = () => {
               }
             />
             <p style={{ color: "grey" }}>
-              Description <span style={{ color: "red" }}>*</span>
+              Price <span style={{ color: "red" }}>*</span>
             </p>
             <Input
-              placeholder="Description"
-              value={formData.description}
+              type="number"
+              placeholder="Price"
+              value={formData.price}
               onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
+                setFormData({ ...formData, price: e.target.value })
               }
+            />
+            <p style={{ color: "grey" }}>
+              Stock <span style={{ color: "red" }}>*</span>
+            </p>
+            <Input
+              type="number"
+              placeholder="Stock"
+              value={formData.stock}
+              onChange={(e) =>
+                setFormData({ ...formData, stock: e.target.value })
+              }
+            />
+            <p style={{ color: "grey" }}>
+              Alert <span style={{ color: "red" }}>*</span>
+            </p>
+            <Input
+              type="number"
+              placeholder="Alert"
+              value={formData.alert}
+              onChange={(e) =>
+                setFormData({ ...formData, alert: e.target.value })
+              }
+            />
+            <p style={{ color: "grey" }}>
+              Discount <span style={{ color: "red" }}>*</span>
+            </p>
+            <Input
+              type="number"
+              placeholder="Discount"
+              value={formData.discount}
+              onChange={(e) =>
+                setFormData({ ...formData, discount: e.target.value })
+              }
+            />
+            <p style={{ color: "grey" }}>
+              Category <span style={{ color: "red" }}>*</span>
+            </p>
+            <Select
+              placeholder="Category"
+              value={formData.category}
+              onChange={(value) => {
+                setFormData({ ...formData, category: value });
+              }}
+              style={{
+                width: "100%",
+              }}
+              options={categories}
             />
           </Space>
           <div className="btn-create-form">
@@ -482,7 +647,7 @@ const CategoryScreen = () => {
               <MyButton
                 color="white"
                 textColor="black"
-                onClick={() => updateCategory()}
+                onClick={() => updateProduct()}
               >
                 Update
               </MyButton>
@@ -542,4 +707,4 @@ const CategoryScreen = () => {
   );
 };
 
-export default CategoryScreen;
+export default ProductScreen;

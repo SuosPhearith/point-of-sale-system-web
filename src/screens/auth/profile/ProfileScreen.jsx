@@ -1,4 +1,4 @@
-import { Input, Modal, message } from "antd";
+import { Input, Modal, Select, message } from "antd";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import MainPage from "../../../components/page/MainPage";
 import "./ProfileScreen.scss";
@@ -9,6 +9,16 @@ import MyButton from "../../../components/general/button/MyButton";
 import male from "../../../assets/images/male.png";
 import female from "../../../assets/images/female.png";
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
+const gender = [
+  {
+    value: "male",
+    label: "Male",
+  },
+  {
+    value: "female",
+    label: "Female",
+  },
+];
 const ProfileScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirm, setConfirm] = useState("");
@@ -264,10 +274,16 @@ const ProfileScreen = () => {
             <p style={{ color: "grey" }}>
               Gender <span style={{ color: "red" }}>*</span>
             </p>
-            <Input
-              value={me.gender}
-              onChange={(e) => setMe({ ...me, gender: e.target.value })}
+            <Select
               placeholder="Gender"
+              value={me.gender}
+              onChange={(value) => {
+                setMe({ ...me, gender: value });
+              }}
+              style={{
+                width: "100%",
+              }}
+              options={gender}
             />
           </div>
           <button
