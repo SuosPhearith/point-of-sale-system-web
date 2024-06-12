@@ -4,14 +4,13 @@ import {
   RiArrowDropRightLine,
   RiDeleteBinFill,
   RiEditFill,
-  RiEyeFill,
   RiHome4Line,
   RiSearchLine,
   RiToggleFill,
   RiToggleLine,
 } from "react-icons/ri";
 import { FaLessThan } from "react-icons/fa";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdAddCircleOutline, MdOutlineEdit } from "react-icons/md";
 import MainPage from "../../../components/page/MainPage";
 import { useEffect, useState } from "react";
 import {
@@ -42,6 +41,8 @@ const ProductScreen = () => {
   const [updateId, setUpdateId] = useState("");
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const [addStockModal, setAddStockModal] = useState(false);
+  const [stock, setStock] = useState(null);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 10,
@@ -72,6 +73,28 @@ const ProductScreen = () => {
         totalCount: data.totalCount,
         totalPages: data.totalPages,
       });
+    } catch (error) {
+      message.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const udpateStock = async () => {
+    try {
+      if (!updateId) return message.info("Update ID not found");
+      const feetback = await makeAPIRequest(
+        "PATCH",
+        `product/${updateId}/addStock`,
+        {
+          stock: stock,
+        }
+      );
+      if (feetback) {
+        getProducts();
+        setAddStockModal(false);
+        setUpdateId("");
+        message.success("Added successfully");
+      }
     } catch (error) {
       message.error("Something went wrong");
     } finally {
@@ -406,9 +429,11 @@ const ProductScreen = () => {
                   <div className="action-inside">
                     <button
                       className="search-btn btn-action"
-                      //   onClick={() => (setGetOneModal(true), findOne(user.id))}
+                      onClick={() => (
+                        setAddStockModal(true), setUpdateId(product.id)
+                      )}
                     >
-                      <RiEyeFill size={20} />
+                      <MdAddCircleOutline size={20} />
                     </button>
                     <button
                       className="btn-action"
@@ -697,6 +722,44 @@ const ProductScreen = () => {
                 onClick={() => updateImage()}
               >
                 Update
+              </MyButton>
+            </Space>
+          </div>
+        </section>
+      </Modal>
+      {/* end update image modal */}
+      {/* start update image modal */}
+      <Modal
+        title="Add Stock"
+        open={addStockModal}
+        onOk={() => setAddStockModal(false)}
+        onCancel={() => setAddStockModal(false)}
+        footer={false}
+      >
+        <section className="my-form-section">
+          <Space style={{ width: "100%" }} direction="vertical">
+            <Input
+              type="number"
+              placeholder="Add Stock"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+            />
+          </Space>
+          <div className="btn-create-form">
+            <Space>
+              <MyButton
+                color="whitesmoke"
+                textColor="black"
+                onClick={() => (setAddStockModal(false), setStock(null))}
+              >
+                Cancel
+              </MyButton>
+              <MyButton
+                color="white"
+                textColor="black"
+                onClick={() => udpateStock()}
+              >
+                Add
               </MyButton>
             </Space>
           </div>
