@@ -112,6 +112,7 @@
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 90%;
 
 }
@@ -149,6 +150,7 @@
 .ordered-item-wrapper{
     width: 95%;
     max-height: 50%;
+    height: 50%;
     overflow: auto;
 }
 
@@ -185,6 +187,7 @@
 
 .ordered-info-image img{
     height: 100%;
+    width: 100%;
     object-fit: cover;
 }
 
