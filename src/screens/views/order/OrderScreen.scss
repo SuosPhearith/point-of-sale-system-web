@@ -1,0 +1,394 @@
+.order-wrapper{
+    width: 100%;
+    height: 88vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-container-1{
+    width: 70%;
+}
+.order-container-2{
+    width: 29%;
+    background-color: yellowgreen;
+}
+
+.order-search{
+    width: 98%;
+    height: 45px;
+    background-color: white;
+    border-radius: 12px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+}
+
+.order-search-btn{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    margin-left: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-search-input{
+    width: 70%;
+    height: 70%;
+    margin-left: 10px;
+    border: none;
+    font-size: 15px;
+    background-color: white;
+}
+
+
+.order-search-input:focus{
+    outline: none;
+}
+
+.order-product-container{
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: space-between;
+    max-height: 90%;
+    overflow: auto;
+}
+
+.order-product {
+    margin-top: 6px;
+    margin-right: 3px;
+    margin-left: 3px;
+    width: 24%;
+    height: 200px;
+    border-radius: 12px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+}
+.order-product:hover{
+    background-color: aliceblue;
+}
+.order-image {
+    width: 80%;
+    object-fit: cover;
+}
+
+.order-product-detail{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.order-name{
+    font-size: 13px;
+    opacity: 70%;
+}
+
+.order-price{
+    font-size: 13px;
+}
+
+.order-container-2{
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.order-information{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+
+}
+.order-cart{
+    width: 20px;
+    background-color: yellow;
+}
+
+.cart-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .order-cart-icon {
+    fill: #000;
+  }
+  
+  .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 9px;
+    width: 15px;
+    height:15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.ordered-item-wrapper{
+    width: 95%;
+    max-height: 50%;
+    overflow: auto;
+}
+
+.ordered-item{
+    width: 100%;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    height: 45px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.ordered-info{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 50%;
+    height: 80%;
+    margin-left: 5px;
+}
+
+.ordered-info-image{
+    width: 40px;
+    height: 100%;
+    background-color: rgb(219, 219, 219);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ordered-info-image img{
+    height: 100%;
+    object-fit: cover;
+}
+
+.ordered-info-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 12px;
+    height: 90%;
+    color: rgb(88, 87, 87);
+    margin-left: 5px;
+}
+.ordered-qty{
+    width: 35%;
+    height: 80%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.ordered-qty-minus{
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.ordered-qty-number{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(198, 192, 192);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.ordered-qty-plus{
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.ordered-total{
+    width: 95%;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 15px;
+}
+.ordered-total-text{
+    color: rgb(74, 74, 74);
+}
+
+.ordered-final{
+    width: 95%;
+    background-color: whitesmoke;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px;
+}
+
+.ordered-cash{
+    width: 95%;
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ordered-cash-number{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ordered-cash-place{
+    width: 100px;
+    background-color: white;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 4px;
+    border-radius: 6px;
+}
+.ordered-cash-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.ordered-cash-info-momey{
+    display: flex;
+    width: 100%;
+    height: 30px;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.ordered-number-cash{
+    width: 32%;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    border-radius: 6px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.ordered-number-cash:hover{
+    background-color: lightblue;
+}
+
+.ordered-cash-back{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 40px;
+    background-color: pink;
+    border-radius: 6px;
+    margin-top: 5px;
+    padding-right: 5px;
+}
+.ordered-submit{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 6px;
+    margin-top: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+/* CSS for screens with width less than 980px */
+@media screen and (max-width: 980px) {
+    /* Your CSS styles for screens less than 980px width */
+    /* For example: */
+    .order-product {
+        width: 23%;
+        height: 150px !important;
+    }
+    
+  }
+/* CSS for screens with width less than 980px */
+@media screen and (max-width: 1100px) {
+    /* Your CSS styles for screens less than 980px width */
+    /* For example: */
+    .order-product {
+        height: 150px;
+    }
+  }
+/* CSS for screens with width less than 980px */
+@media screen and (max-width: 915px) {
+    /* Your CSS styles for screens less than 980px width */
+    /* For example: */
+    .order-wrapper{
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .order-container-1{
+        width: 100%;
+    }
+    .order-container-2{
+        margin-top: 15px;
+        width: 100%;
+    }
+    .order-product {
+        width: 18%;
+        height: 150px !important;
+    }
+  }
+/* CSS for screens with width less than 980px */
+@media screen and (max-width: 700px) {
+    /* Your CSS styles for screens less than 980px width */
+    /* For example: */
+    .order-product {
+        width: 200px;
+        height: 200px !important;   
+    }
+  }
+  

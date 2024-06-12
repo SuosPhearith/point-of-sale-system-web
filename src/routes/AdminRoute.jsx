@@ -14,6 +14,7 @@ import LogScreen from "../screens/auth/profile/LogScreen";
 import CustomerScreen from "../screens/views/customer/CustomerScreen";
 import CategoryScreen from "../screens/views/category/CategoryScreen";
 import ProductScreen from "../screens/views/product/ProductScreen";
+import OrderScreen from "../screens/views/order/OrderScreen";
 //::================================================================================::
 
 const AdminRoute = () => {
@@ -27,6 +28,7 @@ const AdminRoute = () => {
         <Route path="/customer" element={<CustomerScreen />} />
         <Route path="/category" element={<CategoryScreen />} />
         <Route path="/product" element={<ProductScreen />} />
+        <Route path="/order" element={<OrderScreen />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
