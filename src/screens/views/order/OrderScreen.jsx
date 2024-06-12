@@ -60,6 +60,7 @@ const OrderScreen = () => {
       setMoneyback(0);
       setOrderedItem([]);
       message.success("Orderd successfully");
+      getAllProducts();
     } catch (error) {
       message.error("Something went wrong");
     } finally {
