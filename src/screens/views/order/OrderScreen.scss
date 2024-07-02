@@ -16,7 +16,7 @@
 .order-search{
     width: 98%;
     height: 45px;
-    background-color: white;
+    background-color: var(--secondary-color);
     border-radius: 12px;
     display: flex;
     justify-content: start;
@@ -41,7 +41,7 @@
     margin-left: 10px;
     border: none;
     font-size: 15px;
-    background-color: white;
+    background-color: var(--secondary-color);
 }
 
 
@@ -65,16 +65,13 @@
     width: 24%;
     height: 200px;
     border-radius: 12px;
-    background-color: white;
+    background-color: var(--secondary-color);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
-}
-.order-product:hover{
-    background-color: aliceblue;
 }
 .order-image {
     width: 80%;
@@ -89,6 +86,10 @@
     margin-bottom: 8px;
 }
 
+.text-toggle{
+    color: var(--text-color-inverted);
+}
+
 .order-name{
     font-size: 13px;
     opacity: 70%;
@@ -99,7 +100,7 @@
 }
 
 .order-container-2{
-    background-color: white;
+    background-color: var(--secondary-color);
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
     border-radius: 12px;
     display: flex;
@@ -112,7 +113,7 @@
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center ;
     width: 90%;
 
 }
@@ -156,7 +157,8 @@
 
 .ordered-item{
     width: 100%;
-    background-color: white;
+    color: var(--text-color-inverted) !important;
+    background-color: var(--secondary-color);
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
     height: 45px;
     border-radius: 8px;
@@ -250,13 +252,10 @@
     font-weight: 700;
     font-size: 15px;
 }
-.ordered-total-text{
-    color: rgb(74, 74, 74);
-}
 
 .ordered-final{
     width: 95%;
-    background-color: whitesmoke;
+    background-color: var(--third-color);
     border-radius: 6px;
     display: flex;
     flex-direction: column;

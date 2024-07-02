@@ -15,6 +15,7 @@ import AdminRoute from "./routes/AdminRoute";
 import UserRole from "./utils/help/UserRole";
 import AuthRoute from "./routes/AuthRoute";
 import "./App.scss";
+import EmployeeRoute from "./routes/EmployeeRoute";
 //::================================================================================::
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
   const renderRoutes = () => {
     //::==>> render page route by role
     if (role === UserRole.admin) return <AdminRoute />;
+    else if (role === UserRole.employee) return <EmployeeRoute />;
     else return <AuthRoute />;
   };
   //::==>> end render route

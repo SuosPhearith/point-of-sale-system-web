@@ -4,7 +4,6 @@ import {
   RiArrowDropRightLine,
   RiDeleteBinFill,
   RiEditFill,
-  RiEyeFill,
   RiHome4Line,
   RiSearchLine,
   RiToggleFill,
@@ -301,12 +300,6 @@ const CustomerScreen = () => {
                 </div>
                 <div className="action-emp">
                   <div className="action-inside">
-                    <button
-                      className="search-btn btn-action"
-                      //   onClick={() => (setGetOneModal(true), findOne(user.id))}
-                    >
-                      <RiEyeFill size={20} />
-                    </button>
                     <button
                       className="btn-action"
                       onClick={() => handleUpdateEmployee(customer.id)}

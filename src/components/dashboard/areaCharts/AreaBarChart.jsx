@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import PropTypes from "prop-types";
+
 import {
   BarChart,
   Bar,
@@ -9,67 +11,18 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ThemeContext } from "../../../context/ThemeContext";
-import { FaArrowUpLong } from "react-icons/fa6";
 import { LIGHT_THEME } from "../../../constants/themeConstants";
 import "./AreaCharts.scss";
 
-const data = [
-  {
-    month: "Jan",
-    loss: 70,
-    profit: 100,
-  },
-  {
-    month: "Feb",
-    loss: 55,
-    profit: 85,
-  },
-  {
-    month: "Mar",
-    loss: 35,
-    profit: 90,
-  },
-  {
-    month: "April",
-    loss: 90,
-    profit: 70,
-  },
-  {
-    month: "May",
-    loss: 55,
-    profit: 80,
-  },
-  {
-    month: "Jun",
-    loss: 30,
-    profit: 50,
-  },
-  {
-    month: "Jul",
-    loss: 32,
-    profit: 75,
-  },
-  {
-    month: "Aug",
-    loss: 62,
-    profit: 86,
-  },
-  {
-    month: "Sep",
-    loss: 55,
-    profit: 78,
-  },
-];
-
-const AreaBarChart = () => {
+const AreaBarChart = ({ data, totalSales }) => {
   const { theme } = useContext(ThemeContext);
 
   const formatTooltipValue = (value) => {
-    return `${value}k`;
+    return `$${value}`;
   };
 
   const formatYAxisLabel = (value) => {
-    return `${value}k`;
+    return `$${value}`;
   };
 
   const formatLegendValue = (value) => {
@@ -79,13 +32,9 @@ const AreaBarChart = () => {
   return (
     <div className="bar-chart">
       <div className="bar-chart-info">
-        <h5 className="bar-chart-title">Total Revenue</h5>
+        <h5 className="bar-chart-title">Total Sales</h5>
         <div className="chart-info-data">
-          <div className="info-data-value">$50.4K</div>
-          <div className="info-data-text">
-            <FaArrowUpLong />
-            <p>5% than last month.</p>
-          </div>
+          <div className="info-data-value">${totalSales.toFixed(2)}</div>
         </div>
       </div>
       <div className="bar-chart-wrapper">
@@ -133,16 +82,8 @@ const AreaBarChart = () => {
               formatter={formatLegendValue}
             />
             <Bar
-              dataKey="profit"
+              dataKey="income"
               fill="#475be8"
-              activeBar={false}
-              isAnimationActive={false}
-              barSize={24}
-              radius={[4, 4, 4, 4]}
-            />
-            <Bar
-              dataKey="loss"
-              fill="#e3e7fc"
               activeBar={false}
               isAnimationActive={false}
               barSize={24}
@@ -153,6 +94,11 @@ const AreaBarChart = () => {
       </div>
     </div>
   );
+};
+
+AreaBarChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  totalSales: PropTypes.number.isRequired,
 };
 
 export default AreaBarChart;

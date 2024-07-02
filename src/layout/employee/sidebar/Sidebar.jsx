@@ -3,35 +3,27 @@ import { useContext, useEffect, useRef } from "react";
 //::================================================================================::
 
 //::================================>>Third party<<=================================::
-import {
-  MdOutlineAttachMoney,
-  MdOutlineBarChart,
-  MdOutlineClose,
-  MdOutlineCurrencyExchange,
-  MdOutlineGridView,
-  MdOutlineLogout,
-  MdOutlineMessage,
-  MdOutlinePeople,
-  MdOutlineSettings,
-  MdOutlineShoppingBag,
-} from "react-icons/md";
-import { Link } from "react-router-dom";
+import { MdOutlineClose, MdOutlineLogout } from "react-icons/md";
+import { BsBagCheck, BsPersonPlus, BsGear } from "react-icons/bs";
+import { Link, useLocation } from "react-router-dom";
 //::================================================================================::
 
 //::===============================>>Custom library<<===============================::
-import { ThemeContext } from "../../context/ThemeContext";
-import { LIGHT_THEME } from "../../constants/themeConstants";
-import LogoBlue from "../../assets/images/icon.png";
-import LogoWhite from "../../assets/images/logo_white.svg";
-import { SYSTEM_NAME } from "../../config/config";
-import { SidebarContext } from "../../context/SidebarContext";
+import { ThemeContext } from "../../../context/ThemeContext";
+import { SidebarContext } from "../../../context/SidebarContext";
+import { LIGHT_THEME } from "../../../constants/themeConstants";
+import { logout } from "../../../utils/help/help";
+import LogoBlue from "../../../assets/images/logo_blue.svg";
+import LogoWhite from "../../../assets/images/logo_white.svg";
 import "./Sidebar.scss";
+import { SYSTEM_NAME } from "../../../config/config";
 //::================================================================================::
 
 const Sidebar = () => {
   const { theme } = useContext(ThemeContext);
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const navbarRef = useRef(null);
+  const location = useLocation();
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -69,59 +61,29 @@ const Sidebar = () => {
         <div className="sidebar-menu">
           <ul className="menu-list">
             <li className="menu-item">
-              <Link to="/" className="menu-link active">
+              <Link
+                to="/"
+                className={`menu-link ${
+                  location.pathname === "/" ? "active" : ""
+                }`}
+              >
                 <span className="menu-link-icon">
-                  <MdOutlineGridView size={18} />
+                  <BsBagCheck size={20} />
                 </span>
-                <span className="menu-link-text">Dashboard</span>
+                <span className="menu-link-text">Order</span>
               </Link>
             </li>
             <li className="menu-item">
-              <Link to="/" className="menu-link">
+              <Link
+                to="/customer"
+                className={`menu-link ${
+                  location.pathname === "/customer" ? "active" : ""
+                }`}
+              >
                 <span className="menu-link-icon">
-                  <MdOutlineBarChart size={20} />
-                </span>
-                <span className="menu-link-text">Statistics</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineAttachMoney size={20} />
-                </span>
-                <span className="menu-link-text">Payment</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineCurrencyExchange size={18} />
-                </span>
-                <span className="menu-link-text">Transactions</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineShoppingBag size={20} />
-                </span>
-                <span className="menu-link-text">Products</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlinePeople size={20} />
+                  <BsPersonPlus size={20} />
                 </span>
                 <span className="menu-link-text">Customer</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineMessage size={18} />
-                </span>
-                <span className="menu-link-text">Messages</span>
               </Link>
             </li>
           </ul>
@@ -130,15 +92,23 @@ const Sidebar = () => {
         <div className="sidebar-menu sidebar-menu2">
           <ul className="menu-list">
             <li className="menu-item">
-              <Link to="/" className="menu-link">
+              <Link
+                to="/profile"
+                className={`menu-link ${
+                  location.pathname === "/profile" ||
+                  location.pathname === "/profile/log"
+                    ? "active"
+                    : ""
+                }`}
+              >
                 <span className="menu-link-icon">
-                  <MdOutlineSettings size={20} />
+                  <BsGear size={20} />
                 </span>
-                <span className="menu-link-text">Settings</span>
+                <span className="menu-link-text">Setting</span>
               </Link>
             </li>
             <li className="menu-item">
-              <Link to="/" className="menu-link">
+              <Link className="menu-link" onClick={() => logout()}>
                 <span className="menu-link-icon">
                   <MdOutlineLogout size={20} />
                 </span>
