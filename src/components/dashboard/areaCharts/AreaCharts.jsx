@@ -1,13 +1,23 @@
-import AreaBarChart from "./AreaBarChart"
-import AreaProgressChart from "./AreaProgressChart"
+import AreaBarChart from "./AreaBarChart";
+import AreaProgressChart from "./AreaProgressChart";
+import PropTypes from "prop-types";
 
-const AreaCharts = () => {
+const AreaCharts = ({ barChartData, progressData, totalSales }) => {
   return (
     <section className="content-area-charts">
-      <AreaBarChart />
-      <AreaProgressChart />
+      <AreaBarChart
+        data={barChartData}
+        totalSales={totalSales.totalSales.amount}
+      />
+      <AreaProgressChart data={progressData} />
     </section>
-  )
-}
+  );
+};
 
-export default AreaCharts
+AreaCharts.propTypes = {
+  barChartData: PropTypes.object.isRequired,
+  progressData: PropTypes.object.isRequired,
+  totalSales: PropTypes.object.isRequired,
+};
+
+export default AreaCharts;

@@ -60,7 +60,7 @@ const OrderScreen = () => {
       setMoneyback(0);
       setOrderedItem([]);
       message.success("Orderd successfully");
-      getAllProducts();
+      // getAllProducts();
     } catch (error) {
       message.error("Something went wrong");
     } finally {
@@ -176,6 +176,7 @@ const OrderScreen = () => {
                     width: 200,
                     marginRight: 10,
                   }}
+                  className="background-toggle"
                   placeholder="Select Customer"
                   optionFilterProp="children"
                   filterOption={(input, option) =>
@@ -206,16 +207,20 @@ const OrderScreen = () => {
                       className="order-image"
                     />
                     <div className="order-product-detail">
-                      <div className="order-name">{product.name}</div>
+                      <div className="order-name text-toggle">
+                        {product.name}
+                      </div>
                       {product.discount ? (
-                        <div className="order-price">
+                        <div className="order-price text-toggle">
                           <strike style={{ color: "red" }}>
                             ${product.price}
                           </strike>
                           ${product.finalPrice}
                         </div>
                       ) : (
-                        <div className="order-price">${product.finalPrice}</div>
+                        <div className="order-price text-toggle">
+                          ${product.finalPrice}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -253,12 +258,8 @@ const OrderScreen = () => {
                         />
                       </div>
                       <div className="ordered-info-content">
-                        <div className="ordered-info-content-name">
-                          {product.name}
-                        </div>
-                        <div className="ordered-info-content-price">
-                          ${product.finalPrice}
-                        </div>
+                        <div className="text-toggle">{product.name}</div>
+                        <div className="text-toggle">${product.finalPrice}</div>
                       </div>
                     </div>
                     <div className="ordered-qty">
@@ -280,14 +281,14 @@ const OrderScreen = () => {
                 ))}
               </div>
               <div className="ordered-total">
-                <div className="ordered-total-text">TOTAL</div>
-                <div>${totalPrice}</div>
+                <div className="ordered-total-text text-toggle">TOTAL</div>
+                <div className="text-toggle">${totalPrice}</div>
               </div>
               <div className="ordered-final">
                 <div className="ordered-cash">
-                  <div>CASH</div>
+                  <div className="text-toggle">CASH</div>
                   <div className="ordered-cash-number">
-                    <div>$</div>
+                    <div className="text-toggle">$</div>
                     <div className="ordered-cash-place">{paymentCash}</div>
                     <div>
                       <BsTrash3

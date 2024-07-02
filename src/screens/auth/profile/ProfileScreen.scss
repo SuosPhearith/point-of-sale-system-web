@@ -30,7 +30,6 @@
 .profile-card {
     width: 50%;
     padding: 10px;
-    background-color: var(--secondary-color);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -98,7 +97,8 @@
 .profile-information{
     margin-top: 20px;
     width: 100%;
-    background-color: whitesmoke;
+    color: var(--text-color-inverted);
+    background-color: var(--secondary-color) !important;
     padding: 15px;
     border-radius: 6px;
     margin-bottom: 10px;

@@ -1,7 +1,7 @@
 .content-area-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 12px;
+  margin-top: 22px;
   gap: 16px;
 
   @media (max-width: 992px) {
@@ -62,4 +62,12 @@
     font-family: inherit !important;
     opacity: 0.9;
   }
+}
+
+.achieved-gold{
+  padding: 10px 20px 10px 20px;
+  border-radius: 6px;
+  color: white;
+  background-color: blue;
+  font-size: 15px;
 }

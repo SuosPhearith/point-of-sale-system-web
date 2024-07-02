@@ -1,32 +1,6 @@
-const data = [
-  {
-    id: 1,
-    name: "Jeans",
-    percentValues: 70,
-  },
-  {
-    id: 2,
-    name: "Shirts",
-    percentValues: 40,
-  },
-  {
-    id: 3,
-    name: "Belts",
-    percentValues: 60,
-  },
-  {
-    id: 4,
-    name: "Caps",
-    percentValues: 80,
-  },
-  {
-    id: 5,
-    name: "Others",
-    percentValues: 20,
-  },
-];
+import PropTypes from "prop-types";
 
-const AreaProgressChart = () => {
+const AreaProgressChart = ({ data }) => {
   return (
     <div className="progress-bar">
       <div className="progress-bar-info">
@@ -39,7 +13,7 @@ const AreaProgressChart = () => {
               <div className="bar-item-info">
                 <p className="bar-item-info-name">{progressbar.name}</p>
                 <p className="bar-item-info-value">
-                  {progressbar.percentValues}
+                  {progressbar.percentValues}%
                 </p>
               </div>
               <div className="bar-item-full">
@@ -56,6 +30,10 @@ const AreaProgressChart = () => {
       </div>
     </div>
   );
+};
+
+AreaProgressChart.propTypes = {
+  data: PropTypes.object.isRequired,
 };
 
 export default AreaProgressChart;

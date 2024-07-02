@@ -1,38 +1,46 @@
+import PropTypes from "prop-types";
 import AreaCard from "./AreaCard";
 import "./AreaCards.scss";
 
-const AreaCards = () => {
+const AreaCards = ({ data }) => {
+  const format = (number) => {
+    return number.toFixed(2);
+  };
   return (
     <section className="content-area-cards">
       <AreaCard
-        colors={["#e4e8ef", "#475be8"]}
-        percentFillValue={80}
+        colors={["#e4e8ef", "#4ce13f"]}
+        percentFillValue={format(data.totalSales.achieved)}
         cardInfo={{
-          title: "Todays Sales",
-          value: "$20.4K",
-          text: "We have sold 123 items.",
+          title: "Total Sales",
+          value: `$${format(data.totalSales.amount)}`,
+          text: "Amount of total sales.",
         }}
       />
       <AreaCard
-        colors={["#e4e8ef", "#4ce13f"]}
-        percentFillValue={50}
+        colors={["#e4e8ef", "#475be8"]}
+        percentFillValue={format(data.totalSalesToday.achieved)}
         cardInfo={{
-          title: "Todays Revenue",
-          value: "$8.2K",
-          text: "Available to payout",
+          title: "Todays Sales",
+          value: `$${format(data.totalSalesToday.amount)}`,
+          text: `We have sold ${data.totalSalesToday.items} items.`,
         }}
       />
       <AreaCard
         colors={["#e4e8ef", "#f29a2e"]}
-        percentFillValue={40}
+        percentFillValue={format(data.totalCustomers.achieved)}
         cardInfo={{
-          title: "In Escrow",
-          value: "$18.2K",
-          text: "Available to payout",
+          title: "Total Customers",
+          value: `${format(data.totalCustomers.amount)}`,
+          text: "Get total customers.",
         }}
       />
     </section>
   );
+};
+
+AreaCards.propTypes = {
+  data: PropTypes.object.isRequired,
 };
 
 export default AreaCards;

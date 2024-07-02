@@ -11,7 +11,6 @@ import {
   BsBoxes,
   BsPeople,
   BsPersonPlus,
-  BsPersonVcard,
   BsGear,
 } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
@@ -160,19 +159,6 @@ const Sidebar = () => {
                   location.pathname === "/profile/log"
                     ? "active"
                     : ""
-                }`}
-              >
-                <span className="menu-link-icon">
-                  <BsPersonVcard size={20} />
-                </span>
-                <span className="menu-link-text">Profile</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link
-                to="/setting"
-                className={`menu-link ${
-                  location.pathname === "/setting" ? "active" : ""
                 }`}
               >
                 <span className="menu-link-icon">
