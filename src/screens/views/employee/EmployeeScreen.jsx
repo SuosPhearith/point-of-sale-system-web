@@ -14,6 +14,7 @@ import {
   RiEditFill,
   RiDeleteBinFill,
   RiToggleLine,
+  RiLock2Fill,
 } from "react-icons/ri";
 import {
   Image,
@@ -121,6 +122,21 @@ const UserScreen = () => {
             });
           }
         }
+      }
+    } catch (error) {
+      message.error("Something went wrong");
+    }
+  };
+  const resetPassword = async (id) => {
+    try {
+      if (!id) return message.info("Not found");
+      const feedback = await makeAPIRequest(
+        "PATCH",
+        `auth/account/${id}/resetPassword`
+      );
+      if (feedback) {
+        message.success("Reset successfully");
+        getUsers();
       }
     } catch (error) {
       message.error("Something went wrong");
@@ -373,6 +389,19 @@ const UserScreen = () => {
                       onClick={() => (setGetOneModal(true), findOne(user.id))}
                     >
                       <RiEyeFill size={20} />
+                    </button>
+                    <button className="btn-action">
+                      <Popconfirm
+                        title="Reset password"
+                        description="Are you sure to reset password this employee?"
+                        onConfirm={() => resetPassword(user.id)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <button className="btn-action">
+                          <RiLock2Fill size={20} color="red" />
+                        </button>
+                      </Popconfirm>
                     </button>
                     <button
                       className="btn-action"
