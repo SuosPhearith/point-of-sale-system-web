@@ -443,8 +443,8 @@ const ProductScreen = () => {
                     </button>
                     <button className="btn-action">
                       <Popconfirm
-                        title="Remove employee"
-                        description="Are you sure to remove this employee?"
+                        title="Remove product"
+                        description="Are you sure to remove this product?"
                         onConfirm={() => removeProduct(product.id)}
                         okText="Yes"
                         cancelText="No"

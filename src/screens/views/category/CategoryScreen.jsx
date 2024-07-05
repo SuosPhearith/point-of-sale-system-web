@@ -4,7 +4,6 @@ import {
   RiArrowDropRightLine,
   RiDeleteBinFill,
   RiEditFill,
-  RiEyeFill,
   RiHome4Line,
   RiSearchLine,
   RiToggleFill,
@@ -332,12 +331,6 @@ const CategoryScreen = () => {
                 <div className="action-emp">
                   <div className="action-inside">
                     <button
-                      className="search-btn btn-action"
-                      //   onClick={() => (setGetOneModal(true), findOne(user.id))}
-                    >
-                      <RiEyeFill size={20} />
-                    </button>
-                    <button
                       className="btn-action"
                       onClick={() => handleUpdateEmployee(category.id)}
                     >
@@ -345,8 +338,8 @@ const CategoryScreen = () => {
                     </button>
                     <button className="btn-action">
                       <Popconfirm
-                        title="Remove employee"
-                        description="Are you sure to remove this employee?"
+                        title="Remove Category"
+                        description="Are you sure to remove this category?"
                         onConfirm={() => removeCategory(category.id)}
                         okText="Yes"
                         cancelText="No"
