@@ -10,6 +10,7 @@ import { AreaCards, AreaCharts } from "../../components";
 import makeAPIRequest from "../../services/makeAPIRequest";
 import { Modal, Space, Spin, message } from "antd";
 import { useForm } from "react-hook-form";
+import MainPage from "../../components/page/MainPage";
 //::================================================================================::
 
 const Dashboard = () => {
@@ -77,7 +78,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="content-area">
+    <MainPage pageName="Dashboard">
       <button onClick={openModal} className="achieved-gold">
         Edit Achieve Gold
       </button>
@@ -138,7 +139,7 @@ const Dashboard = () => {
           </form>
         </section>
       </Modal>
-    </div>
+    </MainPage>
   );
 };
 

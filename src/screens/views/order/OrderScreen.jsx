@@ -5,6 +5,7 @@ import SpinLayout from "../../../components/general/spin/SpinLayout";
 import "./OrderScreen.scss";
 import burger from "../../../assets/images/burger.png";
 import { BsCart3, BsDash, BsPlusLg, BsSearch, BsTrash3 } from "react-icons/bs";
+import { MdFilterAltOff } from "react-icons/md";
 import makeAPIRequest from "../../../services/makeAPIRequest";
 import { Select, Spin, message } from "antd";
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
@@ -20,14 +21,16 @@ const OrderScreen = () => {
   const [paymentCash, setPaymentCash] = useState(0);
   const [moneyBack, setMoneyback] = useState(0);
   const [selectedCustomer, setSelectedCustomer] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [ordering, setOrdering] = useState(false);
+  const [categories, setCategories] = useState([]);
   //::==========================================================::
   //::=====================>>Screen action<<====================::
   const getAllProducts = async () => {
     try {
       const data = await makeAPIRequest(
         "GET",
-        `order/getAllProducts?&key=${search}`
+        `order/getAllProducts?key=${search}&catKey=${selectedCategory}`
       );
       setProducts(data);
     } catch (error) {
@@ -40,6 +43,16 @@ const OrderScreen = () => {
     try {
       const data = await makeAPIRequest("GET", `order/getAllCustomers`);
       setCustomers(data);
+    } catch (error) {
+      message.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const getAllCategories = async () => {
+    try {
+      const data = await makeAPIRequest("GET", `order/getAllCategories`);
+      setCategories(data);
     } catch (error) {
       message.error("Something went wrong");
     } finally {
@@ -72,6 +85,7 @@ const OrderScreen = () => {
     getAllProducts();
     setLoading(true);
     getAllCustomers();
+    getAllCategories();
   }, []);
   useEffect(() => {
     handleCalculateTotalPrice();
@@ -79,10 +93,17 @@ const OrderScreen = () => {
   useEffect(() => {
     handleMoneyBack();
   }, [paymentCash]);
+  useEffect(() => {
+    getAllProducts();
+  }, [selectedCategory]);
+  useEffect(() => {
+    getAllProducts();
+  }, [search]);
   //::==========================================================::
   //::=====================>>Screen handle<<====================::
-  const handleSearch = () => {
-    getAllProducts();
+  const handleCancelFilter = () => {
+    setSearch("");
+    setSelectedCategory("");
   };
   const handleAddOrderedItem = (product) => {
     setOrderedItem((prevOrderedItems) => {
@@ -146,6 +167,10 @@ const OrderScreen = () => {
     setSelectedCustomer(value);
   };
 
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+  };
+
   //::==========================================================::
   return (
     <MainPage pageName={"Order"}>
@@ -161,12 +186,12 @@ const OrderScreen = () => {
                 </div>
                 <input
                   type="text"
+                  value={search}
                   className="order-search-input"
                   placeholder="Cari menu ..."
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  onKeyDown={() => handleSearch()}
                 />
 
                 <Select
@@ -190,6 +215,43 @@ const OrderScreen = () => {
                   onChange={handleCustomerChange}
                   options={customers}
                 />
+
+                <Select
+                  showSearch
+                  defaultValue={selectedCategory}
+                  style={{
+                    width: 200,
+                    marginRight: 10,
+                  }}
+                  className="background-toggle"
+                  placeholder="Select Category"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? "")
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? "").toLowerCase())
+                  }
+                  onChange={handleCategoryChange}
+                  options={categories}
+                />
+                <div
+                  style={{
+                    padding: "5px",
+                    backgroundColor: "blue",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: "10px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleCancelFilter}
+                >
+                  <MdFilterAltOff color="white" />
+                </div>
               </div>
               <div className="order-product-container">
                 {/* ======================product list====================== */}
